@@ -76,5 +76,10 @@ namespace Gaia::ConfigurationService
         {
             Set(name, std::to_string(value));
         }
+
+        /// Reload the configuration from the JSON file into the Redis server.
+        void Reload();
+        /// Apply the configuration in the Redis server to a JSON file.
+        void Apply();
     };
 }

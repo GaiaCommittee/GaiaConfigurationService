@@ -34,4 +34,16 @@ namespace Gaia::ConfigurationService
     {
         Connection->set(MakeKeyName(UnitName, name), value);
     }
+
+    /// Reload the configuration from the JSON file into the Redis server.
+    void ConfigurationClient::Reload()
+    {
+        Connection->publish("configurations/load", UnitName);
+    }
+
+    /// Apply the configuration in the Redis server to a JSON file.
+    void ConfigurationClient::Apply()
+    {
+        Connection->publish("configurations/save", UnitName);
+    }
 }

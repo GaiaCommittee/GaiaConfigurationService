@@ -30,27 +30,32 @@ namespace Gaia.ConfigurationService
 
             var subscriber= Connection.GetSubscriber();
 
-            subscriber.Subscribe("configurations/command/load", (channel, value) =>
+            subscriber.Subscribe("configurations/load", (channel, value) =>
             {
                 Load(value.ToString());
             });
-            subscriber.Subscribe("configurations/command/save", (channel, value) =>
+            subscriber.Subscribe("configurations/save", (channel, value) =>
             {
                 Save(value.ToString());
             });
-            subscriber.Subscribe("configurations/command/stop", (channel, value) =>
+            subscriber.Subscribe("configurations/command", (channel, value) =>
             {
-                LifeFlag = false;
+                HandleCommand(value);
             });
-            subscriber.Subscribe("configurations/command/restart", (channel, value) =>
-            {
-                LifeFlag = false;
-                throw new Exception(
-                    "Restart command received, current thread has been aborted by this exception.");
-            });
-            
+
             LoadAll();
         }
+
+        void HandleCommand(string command)
+        {
+            switch (command)
+            {
+                case "shutdown":
+                    LifeFlag = false;
+                    break;
+            }
+        }
+        
 
         /// <summary>
         /// Save all configuration key-values when dispose.

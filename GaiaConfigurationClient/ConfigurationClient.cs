@@ -11,6 +11,12 @@ namespace Gaia.ConfigurationService
         /// Connection to the Redis server.
         /// </summary>
         private readonly IDatabase Database;
+
+        /// <summary>
+        /// Subscriber to the channels of Redis server.
+        /// </summary>
+        private readonly ISubscriber Subscriber;
+        
         /// <summary>
         /// Name of the configuration unit.
         /// </summary>
@@ -29,6 +35,7 @@ namespace Gaia.ConfigurationService
             
             var connection = ConnectionMultiplexer.Connect($"{ip}:{port.ToString()}");
             Database = connection.GetDatabase();
+            Subscriber = connection.GetSubscriber();
         }
 
         /// <summary>
@@ -50,6 +57,22 @@ namespace Gaia.ConfigurationService
         public void Set(string item_name, string item_value)
         {
             Database.StringSet($"configurations/{UnitName}/{item_name}", item_value);
+        }
+
+        /// <summary>
+        /// Reload the configuration from the JSON file to the Redis server.
+        /// </summary>
+        public void Reload()
+        {
+            Subscriber.Publish("configurations/load", UnitName);
+        }
+
+        /// <summary>
+        /// Apply the configuration in the Redis server to a JSON file.
+        /// </summary>
+        public void Apply()
+        {
+            Subscriber.Publish("configurations/save", UnitName);
         }
     }
 }
