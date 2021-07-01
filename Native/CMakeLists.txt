@@ -20,5 +20,5 @@ endif()
 add_subdirectory("GaiaConfigurationClient")
 
 if (WITH_TEST)
-    add_subdirectory("GaiaConfigurationClientTest")
+#    add_subdirectory("GaiaConfigurationClientTest")
 endif()

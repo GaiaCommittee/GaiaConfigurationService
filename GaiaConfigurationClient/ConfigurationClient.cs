@@ -50,6 +50,18 @@ namespace Gaia.ConfigurationService
         }
 
         /// <summary>
+        /// Get the value of a configuration item.
+        /// </summary>
+        /// <param name="item_name">Name of the configuration item to get.</param>
+        /// <param name="default_value">Default value to return if given configuration item is empty.</param>
+        /// <returns>String value of the configuration item, or default value if it does not exist.</returns>
+        public string Get(string item_name, string default_value)
+        {
+            var result = Database.StringGet($"configurations/{UnitName}/{item_name}");
+            return result.HasValue ? result.ToString() : default_value;
+        }
+
+        /// <summary>
         /// Set the value of a configuration item.
         /// </summary>
         /// <param name="item_name">Name of the configuration item to set or add.</param>
