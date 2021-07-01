@@ -49,8 +49,8 @@ namespace Gaia.ConfigurationService
                     catch (Exception error)
                     {
                         crashed = true;
+                        Console.WriteLine(error.Message);
                         Console.WriteLine("Configuration service crashed. Restart in 1 seconds.");
-                        error.PrintDump();
                         Thread.Sleep(TimeSpan.FromSeconds(1));
                     }
                 } while (crashed);
