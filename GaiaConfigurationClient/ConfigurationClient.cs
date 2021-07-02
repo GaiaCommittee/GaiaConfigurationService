@@ -29,11 +29,18 @@ namespace Gaia.ConfigurationService
         /// <param name="unit_name">Name of the configuration unit.</param>
         /// <param name="port">Port of the Redis server.</param>
         /// <param name="ip">IP address of the Redis server.</param>
-        public ConfigurationClient(string unit_name, uint port = 6379, string ip = "127.0.0.1")
+        public ConfigurationClient(string unit_name, uint port = 6379, string ip = "127.0.0.1") :
+            this(unit_name, ConnectionMultiplexer.Connect($"{ip}:{port.ToString()}"))
+        {}
+
+        /// <summary>
+        /// Reuse the connection to a Redis server.
+        /// </summary>
+        /// <param name="unit_name">Name of the configuration unit to bind.</param>
+        /// <param name="connection">Connection to the Redis server.</param>
+        public ConfigurationClient(string unit_name, IConnectionMultiplexer connection)
         {
             UnitName = unit_name;
-            
-            var connection = ConnectionMultiplexer.Connect($"{ip}:{port.ToString()}");
             Database = connection.GetDatabase();
             Subscriber = connection.GetSubscriber();
         }
