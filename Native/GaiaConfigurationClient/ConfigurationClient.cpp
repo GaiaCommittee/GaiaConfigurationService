@@ -14,7 +14,9 @@ namespace Gaia::ConfigurationService
 
     /// Establish a connection to the Redis server on the given port and ip address.
     ConfigurationClient::ConfigurationClient(const std::string& unit_name, unsigned int port, const std::string &ip) :
-        ConfigurationClient(unit_name, std::make_shared<sw::redis::Redis>())
+        ConfigurationClient(unit_name,
+                            std::make_shared<sw::redis::Redis>(
+                                    "tcp://" + ip + ":" + std::to_string(port)))
     {}
 
 

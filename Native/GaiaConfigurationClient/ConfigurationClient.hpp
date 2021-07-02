@@ -23,7 +23,7 @@ namespace Gaia::ConfigurationService
         const std::string UnitName;
 
         /// Connection to the Redis server.
-        std::unique_ptr<sw::redis::Redis> Connection;
+        std::shared_ptr<sw::redis::Redis> Connection;
 
     public:
         /**
