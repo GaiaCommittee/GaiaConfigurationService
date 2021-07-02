@@ -28,12 +28,20 @@ namespace Gaia::ConfigurationService
     public:
         /**
          * @brief Connect to the given Redis server and bind the given configuration unit.
-         * @param unit Name of the configuration unit.
+         * @param unit_name Name of the configuration unit to bind.
          * @param port Port of the Redis server.
          * @param ip IP address of the Redis server.
          */
-        explicit ConfigurationClient(const std::string& unit,
+        explicit ConfigurationClient(const std::string& unit_name,
                                      unsigned int port = 6379, const std::string& ip = "127.0.0.1");
+
+        /**
+         * @brief Reuse the connection to a Redis server.
+         * @param unit_name Name of the configuration unit to bind.
+         * @param connection The connection to a Redis server.
+         */
+        explicit ConfigurationClient(const std::string& unit_name,
+                                     std::shared_ptr<sw::redis::Redis> connection);
 
         /**
          * @brief Get the string value of the given configuration item.

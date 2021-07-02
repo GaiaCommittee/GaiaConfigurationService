@@ -12,16 +12,17 @@ namespace Gaia::ConfigurationService
         return key_builder.str();
     }
 
-    ConfigurationClient::ConfigurationClient(const std::string &unit, unsigned int port, const std::string &ip)
-    {
-        // Configure the connection and connect to the Redis server.
-        sw::redis::ConnectionOptions options;
-        options.port = static_cast<int>(port);
-        options.host = ip;
-        options.socket_timeout = std::chrono::milliseconds(100);
+    /// Establish a connection to the Redis server on the given port and ip address.
+    ConfigurationClient::ConfigurationClient(const std::string& unit_name, unsigned int port, const std::string &ip) :
+        ConfigurationClient(unit_name, std::make_shared<sw::redis::Redis>())
+    {}
 
-        Connection = std::make_unique<sw::redis::Redis>(options);
-    }
+
+    /// Reuse the connection to a Redis server.
+    ConfigurationClient::ConfigurationClient(const std::string &unit_name,
+                                             std::shared_ptr<sw::redis::Redis> connection) :
+                                             Connection(std::move(connection))
+    {}
 
     /// Get the string value of the given configuration item.
     std::optional<std::string> ConfigurationClient::Get(const std::string& name)
