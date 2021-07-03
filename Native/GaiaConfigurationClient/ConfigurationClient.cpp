@@ -1,6 +1,7 @@
 #include "ConfigurationClient.hpp"
 
 #include <sstream>
+#include <utility>
 
 namespace Gaia::ConfigurationService
 {
@@ -21,9 +22,9 @@ namespace Gaia::ConfigurationService
 
 
     /// Reuse the connection to a Redis server.
-    ConfigurationClient::ConfigurationClient(const std::string &unit_name,
+    ConfigurationClient::ConfigurationClient(std::string unit_name,
                                              std::shared_ptr<sw::redis::Redis> connection) :
-                                             Connection(std::move(connection))
+        Connection(std::move(connection)), UnitName(std::move(unit_name))
     {}
 
     /// Get the string value of the given configuration item.

@@ -40,7 +40,7 @@ namespace Gaia::ConfigurationService
          * @param unit_name Name of the configuration unit to bind.
          * @param connection The connection to a Redis server.
          */
-        explicit ConfigurationClient(const std::string& unit_name,
+        explicit ConfigurationClient(std::string unit_name,
                                      std::shared_ptr<sw::redis::Redis> connection);
 
         /**
