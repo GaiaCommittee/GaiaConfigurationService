@@ -18,6 +18,7 @@ endif()
 #==============================
 
 add_subdirectory("GaiaConfigurationClient")
+add_subdirectory("GaiaScrollBar")
 
 if (WITH_TEST)
 #    add_subdirectory("GaiaConfigurationClientTest")
